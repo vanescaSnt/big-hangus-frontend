@@ -3,9 +3,19 @@ import { ref, onMounted } from 'vue'
 import { listarIngredientes } from '../services/ingredientes'
 
 const ingredientes = ref([])
+const carregando = ref(false)
+const mensagemDeErro = ref('')
 
 async function carregarIngredientes() {
-  ingredientes.value = await listarIngredientes()
+  carregando.value = true
+  mensagemDeErro.value = ''
+  try {
+    ingredientes.value = await listarIngredientes()
+  } catch (erro) {
+    mensagemDeErro.value = erro.message
+  } finally {
+    carregando.value = false
+  }
 }
 
 onMounted(carregarIngredientes)
@@ -24,7 +34,11 @@ function formatarData(data) {
 <template>
   <h1>Ingredientes</h1>
 
-  <table>
+  <p v-if="carregando">Carregando...</p>
+  <p v-else-if="mensagemDeErro">{{ mensagemDeErro }}</p>
+  <p v-else-if="ingredientes.length === 0">Nenhum ingrediente encontrado.</p>
+
+  <table v-else>
     <thead>
       <tr>
         <th>Nome</th>
