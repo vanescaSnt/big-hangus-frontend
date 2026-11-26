@@ -33,47 +33,104 @@ function formatarData(data) {
 </script>
 
 <template>
-  <h1>Ingredientes</h1>
-  <RouterLink to="/ingredientes/novo">Novo ingrediente</RouterLink>
+  <div class="topo">
+    <h1>Ingredientes</h1>
+    <RouterLink to="/ingredientes/novo" class="btn">Novo ingrediente</RouterLink>
+  </div>
 
-  <form @submit.prevent="carregarIngredientes">
-    <input v-model="busca" type="search" placeholder="Buscar ingrediente por nome" />
-    <button type="submit">Buscar</button>
-  </form>
+  <div class="card">
+    <form class="busca" @submit.prevent="carregarIngredientes">
+      <input v-model="busca" type="search" placeholder="Buscar ingrediente por nome" />
+      <button type="submit" class="btn">Buscar</button>
+    </form>
 
-  <p v-if="carregando">Carregando...</p>
-  <p v-else-if="mensagemDeErro">{{ mensagemDeErro }}</p>
-  <p v-else-if="ingredientes.length === 0">Nenhum ingrediente encontrado.</p>
+    <p v-if="carregando" class="estado">Carregando...</p>
+    <p v-else-if="mensagemDeErro" class="estado estado--erro">{{ mensagemDeErro }}</p>
+    <p v-else-if="ingredientes.length === 0" class="estado">Nenhum ingrediente encontrado.</p>
 
-  <table v-else>
-    <thead>
-      <tr>
-        <th>Nome</th>
-        <th>Disponível</th>
-        <th>Unidade</th>
-        <th>Mínimo</th>
-        <th>Validade</th>
-        <th>Situação</th>
-        <th>Ações</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr 
-        v-for="ingrediente in ingredientes"
-          :key="ingrediente.id"
-          :class="{ 'em-baixa': ingrediente.em_baixa }"
-      >
-        <td>{{ ingrediente.nome }}</td>
-        <td>{{ formatarNumero(ingrediente.quantidade_disponivel) }}</td>
-        <td>{{ ingrediente.unidade_medida }}</td>
-        <td>{{ formatarNumero(ingrediente.quantidade_minima) }}</td>
-        <td>{{ formatarData(ingrediente.data_validade) }}</td>
-        <td>{{ ingrediente.em_baixa ? 'Estoque baixo' : 'Em estoque' }}</td>
-        <td>
-          <RouterLink :to="`/ingredientes/${ingrediente.id}`">Editar</RouterLink>
-          <button type="button">Excluir</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+    <div v-else class="tabela">
+      <table>
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Disponível</th>
+            <th>Unidade</th>
+            <th>Mínimo</th>
+            <th>Validade</th>
+            <th>Situação</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            v-for="ingrediente in ingredientes"
+            :key="ingrediente.id"
+            :class="{ 'em-baixa': ingrediente.em_baixa }"
+          >
+            <td>{{ ingrediente.nome }}</td>
+            <td>{{ formatarNumero(ingrediente.quantidade_disponivel) }}</td>
+            <td>{{ ingrediente.unidade_medida }}</td>
+            <td>{{ formatarNumero(ingrediente.quantidade_minima) }}</td>
+            <td>{{ formatarData(ingrediente.data_validade) }}</td>
+            <td>
+              <span :class="['tag', ingrediente.em_baixa ? 'tag--alerta' : 'tag--ok']">
+                {{ ingrediente.em_baixa ? 'Estoque baixo' : 'Em estoque' }}
+              </span>
+            </td>
+            <td>
+              <div class="acoes-linha">
+                <RouterLink
+                  :to="`/ingredientes/${ingrediente.id}`"
+                  class="btn btn--secundario btn--pequeno"
+                >
+                  Editar
+                </RouterLink>
+                <button type="button" class="btn btn--secundario btn--pequeno">Excluir</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </template>
+
+<style scoped>
+.topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.busca {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.busca input {
+  flex: 1;
+  max-width: 340px;
+}
+
+.estado {
+  text-align: center;
+  color: var(--cor-texto-suave);
+  padding: 24px;
+}
+
+.estado--erro {
+  color: var(--cor-primaria-escura);
+}
+
+.em-baixa {
+  background: var(--cor-alerta-fundo);
+}
+
+/* fica em uma div, e não direto no <td>, para não quebrar o alinhamento da tabela */
+.acoes-linha {
+  display: flex;
+  gap: 6px;
+}
+</style>
