@@ -67,3 +67,15 @@ export function listarIngredientes({ nome, emBaixa } = {}) {
 export function consultarIngrediente(id) {
   return requisitar('GET', `/ingredientes/${id}`)
 }
+
+export function criarIngrediente(dados) {
+  return requisitar('POST', '/ingredientes', dados)
+}
+
+export function alterarIngrediente(id, dados) {
+  return requisitar('PUT', `/ingredientes/${id}`, dados)
+}
+
+export function excluirIngrediente(id) {
+  return requisitar('DELETE', `/ingredientes/${id}`)
+}
