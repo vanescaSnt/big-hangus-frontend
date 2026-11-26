@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue'
 import { listarIngredientes } from '../services/ingredientes'
 
 const ingredientes = ref([])
+const busca = ref('')
 const carregando = ref(false)
 const mensagemDeErro = ref('')
 
@@ -10,7 +11,7 @@ async function carregarIngredientes() {
   carregando.value = true
   mensagemDeErro.value = ''
   try {
-    ingredientes.value = await listarIngredientes()
+    ingredientes.value = await listarIngredientes({ nome: busca.value.trim() })
   } catch (erro) {
     mensagemDeErro.value = erro.message
   } finally {
@@ -33,6 +34,11 @@ function formatarData(data) {
 
 <template>
   <h1>Ingredientes</h1>
+
+  <form @submit.prevent="carregarIngredientes">
+    <input v-model="busca" type="search" placeholder="Buscar ingrediente por nome" />
+    <button type="submit">Buscar</button>
+  </form>
 
   <p v-if="carregando">Carregando...</p>
   <p v-else-if="mensagemDeErro">{{ mensagemDeErro }}</p>
