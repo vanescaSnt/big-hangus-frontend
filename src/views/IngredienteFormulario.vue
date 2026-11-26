@@ -102,9 +102,15 @@ async function salvar() {
       await criarIngrediente(dados)
     }
     router.push('/ingredientes')
-  } catch (erro) {
-    mensagemDeErro.value = erro.message
-  } finally {
+    } catch (erro) {
+        if (erro.status === 409) {
+        erros.value = { nome: 'Já existe um ingrediente com esse nome.' }
+        } else if (erro.status === 422) {
+        erros.value = erro.errosPorCampo
+        } else {
+        mensagemDeErro.value = erro.message
+        }
+    } finally {
     salvando.value = false
   }
 }
