@@ -26,3 +26,31 @@ A documentação do projeto fica no repositório do backend:
 - Elisson da Silva Tavares
 - Gabriel Victor de Souza Fernandes
 - Vanesca Héllen dos Santos Silva
+
+## Setup
+
+Pré-requisitos: Node.js 20 ou superior e o [backend](https://github.com/vanescaSnt/big-hangus-backend) rodando (veja o README dele).
+
+Crie o `.env`:
+
+```bash
+cp .env.example .env
+```
+
+A variável `VITE_API_URL` aponta para a API (padrão `http://localhost:8000`). Ajuste se o backend estiver em outra porta ou endereço.
+
+Instale as dependências e inicie o servidor de desenvolvimento:
+
+```bash
+npm install
+npm run dev
+```
+
+App: http://localhost:5173
+
+## Build
+
+```bash
+npm run build     # gera a pasta dist/
+npm run preview   # serve o build localmente para conferir
+```
