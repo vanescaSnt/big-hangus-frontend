@@ -1,6 +1,16 @@
 <script setup>
 import { ref, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { listarIngredientes } from '../services/ingredientes'
+
+const route = useRoute()
+const router = useRouter()
+
+const MENSAGENS_DE_SUCESSO = {
+  criado: 'Ingrediente cadastrado com sucesso.',
+  alterado: 'Ingrediente alterado com sucesso.',
+}
+const confirmacao = ref(MENSAGENS_DE_SUCESSO[route.query.salvo] ?? '')
 
 const ingredientes = ref([])
 const busca = ref('')
@@ -19,7 +29,18 @@ async function carregarIngredientes() {
   }
 }
 
-onMounted(carregarIngredientes)
+onMounted(() => {
+  carregarIngredientes()
+
+  // faz a mensagem de confirmação sumir depois de 4 segundos
+  if (confirmacao.value) {
+    router.replace({ path: '/ingredientes' })
+
+    setTimeout(() => {
+      confirmacao.value = ''
+    }, 4000)
+  }
+})
 
 function formatarNumero(valor) {
   return Number(valor).toLocaleString('pt-BR')
@@ -37,6 +58,8 @@ function formatarData(data) {
     <h1>Ingredientes</h1>
     <RouterLink to="/ingredientes/novo" class="btn">Novo ingrediente</RouterLink>
   </div>
+
+  <p v-if="confirmacao" class="confirmacao">{{ confirmacao }}</p>
 
   <div class="card">
     <form class="busca" @submit.prevent="carregarIngredientes">
@@ -132,5 +155,13 @@ function formatarData(data) {
 .acoes-linha {
   display: flex;
   gap: 6px;
+}
+
+.confirmacao {
+  background: var(--cor-fundo-confirmacao);
+  color: var(--cor-confirmacao);
+  padding: 10px 14px;
+  border-radius: var(--raio);
+  margin-bottom: 16px;
 }
 </style>

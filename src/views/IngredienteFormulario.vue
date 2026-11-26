@@ -101,7 +101,10 @@ async function salvar() {
     } else {
       await criarIngrediente(dados)
     }
-    router.push('/ingredientes')
+    router.push({
+      path: '/ingredientes',
+      query: { salvo: editando ? 'alterado' : 'criado' },
+    })
     } catch (erro) {
         if (erro.status === 409) {
         erros.value = { nome: 'Já existe um ingrediente com esse nome.' }
