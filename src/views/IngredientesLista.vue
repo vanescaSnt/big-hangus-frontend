@@ -52,15 +52,21 @@ function formatarData(data) {
         <th>Unidade</th>
         <th>Mínimo</th>
         <th>Validade</th>
+        <th>Situação</th>
       </tr>
     </thead>
     <tbody>
-      <tr v-for="ingrediente in ingredientes" :key="ingrediente.id">
+      <tr 
+        v-for="ingrediente in ingredientes"
+          :key="ingrediente.id"
+          :class="{ 'em-baixa': ingrediente.em_baixa }"
+      >
         <td>{{ ingrediente.nome }}</td>
         <td>{{ formatarNumero(ingrediente.quantidade_disponivel) }}</td>
         <td>{{ ingrediente.unidade_medida }}</td>
         <td>{{ formatarNumero(ingrediente.quantidade_minima) }}</td>
         <td>{{ formatarData(ingrediente.data_validade) }}</td>
+        <td>{{ ingrediente.em_baixa ? 'Estoque baixo' : 'Em estoque' }}</td>
       </tr>
     </tbody>
   </table>
