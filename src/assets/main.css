@@ -1,0 +1,148 @@
+/* =========================================================
+   Estilos globais — Big Hangus Estoque
+   Aqui ficam apenas cores, base e componentes reutilizáveis.
+   Estilos de uma tela específica ficam no <style scoped> dela.
+   ========================================================= */
+
+/* ---------- Cores e medidas ---------- */
+:root {
+  --cor-primaria: #d8161c;
+  --cor-primaria-escura: #a80f14;
+  --cor-destaque: #ffd500;
+  --cor-fundo: #f6f4f1;
+  --cor-superficie: #ffffff;
+  --cor-texto: #231f20;
+  --cor-texto-suave: #6b6465;
+  --cor-borda: #e3dedb;
+  --cor-sucesso: #1f7a3d;
+  --cor-sucesso-fundo: #def3e4;
+  --cor-alerta: #7a5b00;
+  --cor-alerta-fundo: #fff1b8;
+  --cor-erro-fundo: #fde0e0;
+
+  --raio: 6px;
+}
+
+/* ---------- Base ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+body {
+  font-family: system-ui, sans-serif;
+  line-height: 1.4;
+  background: var(--cor-fundo);
+  color: var(--cor-texto);
+}
+
+h1 {
+  font-size: 28px;
+  font-weight: 900;
+}
+
+h2 {
+  font-size: 20px;
+}
+
+/* ---------- Formulários ---------- */
+input,
+select {
+  font: inherit;
+  padding: 8px 10px;
+  border: 2px solid var(--cor-borda);
+  border-radius: var(--raio);
+  background: var(--cor-superficie);
+  color: var(--cor-texto);
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: var(--cor-primaria);
+}
+
+/* ---------- Botões (também usados em RouterLink) ---------- */
+.btn {
+  display: inline-block;
+  font: inherit;
+  font-weight: 700;
+  text-decoration: none;
+  padding: 8px 16px;
+  border: 2px solid var(--cor-primaria);
+  border-radius: var(--raio);
+  background: var(--cor-primaria);
+  color: #fff;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: var(--cor-primaria-escura);
+  border-color: var(--cor-primaria-escura);
+}
+
+.btn--secundario {
+  background: var(--cor-superficie);
+  color: var(--cor-primaria);
+}
+
+.btn--secundario:hover {
+  background: var(--cor-erro-fundo);
+}
+
+.btn--pequeno {
+  padding: 4px 10px;
+  font-size: 14px;
+}
+
+/* ---------- Card ---------- */
+.card {
+  background: var(--cor-superficie);
+  border: 1px solid var(--cor-borda);
+  border-top: 4px solid var(--cor-destaque);
+  border-radius: 8px;
+  padding: 18px 20px;
+}
+
+/* ---------- Tabela ---------- */
+.tabela {
+  overflow-x: auto; /* rola na horizontal em telas pequenas */
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--cor-borda);
+}
+
+th {
+  background: var(--cor-primaria);
+  color: #fff;
+}
+
+/* ---------- Tag de situação ---------- */
+.tag {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.tag--ok {
+  background: var(--cor-sucesso-fundo);
+  color: var(--cor-sucesso);
+}
+
+.tag--alerta {
+  background: var(--cor-alerta-fundo);
+  color: var(--cor-alerta);
+}
