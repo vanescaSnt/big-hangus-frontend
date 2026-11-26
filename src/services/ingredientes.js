@@ -52,3 +52,18 @@ async function requisitar(metodo, caminho, dados) {
   if (!resposta.ok) throw criarErroDaResposta(resposta.status, corpoDaResposta)
   return corpoDaResposta
 }
+
+
+export function listarIngredientes({ nome, emBaixa } = {}) {
+  const parametros = new URLSearchParams()
+  if (nome) parametros.set('nome', nome)
+  if (emBaixa) parametros.set('em_baixa', 'true')
+
+  const consulta = parametros.toString()
+  const caminho = consulta ? `/ingredientes?${consulta}` : '/ingredientes'
+  return requisitar('GET', caminho)
+}
+
+export function consultarIngrediente(id) {
+  return requisitar('GET', `/ingredientes/${id}`)
+}
