@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { listarIngredientes } from '../services/ingredientes'
+import { listarIngredientes, excluirIngrediente } from '../services/ingredientes'
 
 const route = useRoute()
 const router = useRouter()
@@ -26,6 +26,22 @@ async function carregarIngredientes() {
     mensagemDeErro.value = erro.message
   } finally {
     carregando.value = false
+  }
+}
+
+async function excluir(ingrediente) {
+  const confirmou = window.confirm(`Deseja realmente excluir "${ingrediente.nome}"?`)
+  if (!confirmou) return
+
+  try {
+    await excluirIngrediente(ingrediente.id)
+    await carregarIngredientes()
+    confirmacao.value = 'Ingrediente excluído com sucesso.'
+    setTimeout(() => {
+      confirmacao.value = ''
+    }, 4000)
+  } catch (erro) {
+    console.error(erro)
   }
 }
 
@@ -108,7 +124,13 @@ function formatarData(data) {
                 >
                   Editar
                 </RouterLink>
-                <button type="button" class="btn btn--secundario btn--pequeno">Excluir</button>
+                <button
+                  type="button"
+                  class="btn btn--secundario btn--pequeno"
+                  @click="excluir(ingrediente)"
+                >
+                  Excluir
+                </button>
               </div>
             </td>
           </tr>
