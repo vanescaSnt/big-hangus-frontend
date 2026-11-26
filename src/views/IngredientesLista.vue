@@ -34,6 +34,7 @@ function formatarData(data) {
 
 <template>
   <h1>Ingredientes</h1>
+  <RouterLink to="/ingredientes/novo">Novo ingrediente</RouterLink>
 
   <form @submit.prevent="carregarIngredientes">
     <input v-model="busca" type="search" placeholder="Buscar ingrediente por nome" />
@@ -53,6 +54,7 @@ function formatarData(data) {
         <th>Mínimo</th>
         <th>Validade</th>
         <th>Situação</th>
+        <th>Ações</th>
       </tr>
     </thead>
     <tbody>
@@ -67,6 +69,10 @@ function formatarData(data) {
         <td>{{ formatarNumero(ingrediente.quantidade_minima) }}</td>
         <td>{{ formatarData(ingrediente.data_validade) }}</td>
         <td>{{ ingrediente.em_baixa ? 'Estoque baixo' : 'Em estoque' }}</td>
+        <td>
+          <RouterLink :to="`/ingredientes/${ingrediente.id}`">Editar</RouterLink>
+          <button type="button">Excluir</button>
+        </td>
       </tr>
     </tbody>
   </table>
