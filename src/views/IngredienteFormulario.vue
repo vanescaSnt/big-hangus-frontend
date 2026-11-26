@@ -62,8 +62,37 @@ function montarDados() {
   }
 }
 
+// confere os campos antes de chamar a API e devolve os erros encontrados
+function validar() {
+  const resultado = {}
+
+  if (!formulario.nome.trim()) {
+    resultado.nome = 'Informe o nome.'
+  }
+
+  const camposNumericos = ['preco', 'quantidade_disponivel', 'quantidade_minima']
+  for (const campo of camposNumericos) {
+    const valor = formulario[campo]
+    if (valor === '' || valor === null) {
+      resultado[campo] = 'Campo obrigatório.'
+    } else if (Number(valor) < 0) {
+      resultado[campo] = 'O valor não pode ser negativo.'
+    }
+  }
+
+  if (!formulario.unidade_medida) {
+    resultado.unidade_medida = 'Escolha a unidade de medida.'
+  }
+
+  return resultado
+}
+
 async function salvar() {
   mensagemDeErro.value = ''
+
+  erros.value = validar()
+  if (Object.keys(erros.value).length > 0) return // tem erro, não envia
+
   salvando.value = true
   try {
     const dados = montarDados()
